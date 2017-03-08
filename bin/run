@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..
+
+: ${CIRCLE_URL:?"You must specify CIRCLE_URL"}
+docker run \
+  -e "CIRCLE_URL=$CIRCLE_URL" \
+  --device /dev/ttyAMA0:/dev/ttyAMA0 \
+  --device /dev/mem:/dev/mem \
+  --privileged \
+  -ti faun/ci-status
