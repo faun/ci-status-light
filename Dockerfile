@@ -10,4 +10,3 @@ RUN (cd /tmp; wget -O jq.tar.gz https://github.com/stedolan/jq/releases/download
 
 ENTRYPOINT /data/ci-status.sh
 COPY ci-status.sh /data/
-RUN chmod +x /data/ci-status.sh
