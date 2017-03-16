@@ -9,4 +9,4 @@ RUN (cd /tmp; wget -O jq.tar.gz https://github.com/stedolan/jq/releases/download
     && cp /tmp/jq/jq /usr/local/bin/
 
 ENTRYPOINT /data/ci-status.sh
-COPY ci-status.sh /data/
+COPY . /data/
