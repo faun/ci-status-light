@@ -3,8 +3,15 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..
 
 : ${CIRCLE_URL:?"You must specify CIRCLE_URL"}
+: ${POST_TO_SLACK:?"You must specify POST_TO_SLACK"}
+: ${CIRCLE_CI_BRANCH_URL:?"You must specify CIRCLE_CI_BRANCH_URL"}
+: ${SLACK_WEBHOOK_URL:?"You must specify SLACK_WEBHOOK_URL"}
+
 docker run \
   -e "CIRCLE_URL=$CIRCLE_URL" \
+  -e "SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL" \
+  -e "CIRCLE_CI_BRANCH_URL=$CIRCLE_CI_BRANCH_URL" \
+  -e "POST_TO_SLACK=$POST_TO_SLACK" \
   --device /dev/ttyAMA0:/dev/ttyAMA0 \
   --device /dev/mem:/dev/mem \
   --privileged \

@@ -73,9 +73,19 @@ do
   if [[ "$CI_STATUS" = "success" ]] || [[ "$CI_STATUS" = "fixed" ]] 
   then
     led_color green
+    if [[ "$POST_TO_SLACK" = "true" ]]
+    then
+      echo "Posting to slack channel"
+      ./post_to_slack.sh fixed
+    fi
   elif [[ "$CI_STATUS" = "failed" ]]
   then
     led_color red
+    if [[ "$POST_TO_SLACK" = "true" ]]
+    then
+      echo "Posting to slack channel"
+      ./post_to_slack.sh failed
+    fi
   elif [[ "$CI_STATUS" = "canceled" ]]
   then
     led_color orange
