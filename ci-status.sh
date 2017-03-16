@@ -89,11 +89,14 @@ do
   elif [[ "$CI_STATUS" = "canceled" ]]
   then
     led_color orange
-  elif [[ "$CI_STATUS" = "running" ]] || [[ "$CI_STATUS" = "queued" ]]
+  elif [[ "$CI_STATUS" = "running" ]]
   then
     led_color blue
-	else
+  elif [[ "$CI_STATUS" = "queued" ]]
+  then
     led_color purple
+  else
+    reset_colors
   fi
   sleep ${TIMEOUT:-30}
 done
