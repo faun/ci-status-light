@@ -1,0 +1,11 @@
+[Unit]
+Description=CI Status Light
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=[PATH_TO_SCRIPT]/ci-status.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
