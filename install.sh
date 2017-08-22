@@ -13,6 +13,10 @@ then
     echo "Linking $target to /etc/systemd/system/"
     sudo cp -Ri "$file" /etc/systemd/system/
   done
+  sudo systemctl daemon-reload
+  sudo systemctl stop ci-status-light
+  sudo systemctl start ci-status-light
+  sudo systemctl status ci-status-light -l
 else
   cp -R "$DIR/systemd_examples/" "$DIR/systemd/"
   echo "Please edit the files in "$DIR/systemd/" and run this command again"
