@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 : ${CIRCLE_CI_BRANCH_URL:?"You must specify CIRCLE_CI_BRANCH_URL"}
 : ${SLACK_WEBHOOK_URL:?"You must specify SLACK_WEBHOOK_URL"}
+: ${SLACK_PROJECT_NAME:?"You must specify SLACK_PROJECT_NAME"}
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ "$1" = "fixed" ]]
 then
   if [[ -f "$DIR/.failed-build" ]]
   then
-    MESSAGE="The build on the Hellblazer master branch has been fixed. Hooray!"
+    MESSAGE="The build on the $PROJECT_NAME master branch has been fixed. Hooray!"
     MESSAGE_COLOR="good"
     rm "$DIR/.failed-build"
   else
@@ -23,7 +24,7 @@ then
   else
     MASTER_BRANCH_LINK="<$CIRCLE_CI_BRANCH_URL|Fix it ➡️>"
     MESSAGE_COLOR="danger"
-    MESSAGE="A build has failed on the Hellblazer master branch. $MASTER_BRANCH_LINK"
+    MESSAGE="A build has failed on the $PROJECT_NAME master branch. $MASTER_BRANCH_LINK"
     touch "$DIR/.failed-build"
   fi
 fi
