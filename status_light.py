@@ -113,7 +113,7 @@ def main(Loading):
     set_colors(colors)
     msleep(30000)
     main(False)
-    print "DONE"
+    print('DONE')
 
 if __name__ == "__main__":
     try:
@@ -125,6 +125,6 @@ if __name__ == "__main__":
 
     except OSError:
         e = sys.exc_info()[0]
-        print "Quitting... {}".format(e)
+        print("Quitting... {}".format(e))
         reset_colors()
         sys.exit(1)
