@@ -4,7 +4,6 @@ import time
 import random
 import yaml
 from sense_hat import SenseHat
-import numpy as np
 from download_worker import DownloadWorker
 
 sense = SenseHat()
