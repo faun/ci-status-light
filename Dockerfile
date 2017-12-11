@@ -6,11 +6,13 @@ RUN apt-get update && apt-get install -y \
     sense-hat \
     python3-pygame
 
+RUN rm -rf /usr/local/lib/python2.7/
+
 # Define working directory
 WORKDIR /app
 
 COPY . /app
 
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
-CMD ["/bin/bash"]
+CMD ["/usr/local/bin/python3", "/app/status_light.py"]
