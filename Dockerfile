@@ -4,7 +4,8 @@ MAINTAINER Faun <docker@faun.me>
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     sense-hat \
-    python3-pygame
+    python3-pygame \
+    python3-blinkt
 
 RUN rm -rf /usr/local/lib/python2.7/
 
