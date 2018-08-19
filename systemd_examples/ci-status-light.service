@@ -4,7 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=[PATH_TO_SCRIPT]/ci-status.sh
+WorkingDirectory=[PATH_TO_DIRECTORY]/circle-ci-status-light/
+ExecStart=[PATH_TO_DIRECTORY]/status_light.py
 Restart=on-failure
 
 [Install]

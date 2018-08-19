@@ -1,12 +1,19 @@
-FROM acencini/rpi-python-serial-wiringpi
-RUN apt-get update && apt-get install -yq ca-certificates libidn11 openssl wget bzip2 tar libtool flex bison dh-autoreconf
+FROM resin/raspberry-pi3-python:3-slim
+MAINTAINER Faun <docker@faun.me>
 
-RUN (cd /tmp; wget -O jq.tar.gz https://github.com/stedolan/jq/releases/download/jq-1.5/jq-1.5.tar.gz) \
-    && (cd /tmp; mkdir jq; tar -xf jq.tar.gz -C jq --strip-components=1; rm jq.tar.gz) \
-    && (cd /tmp/jq/; autoreconf -i && ./configure --enable-all-static --disable-maintainer-mode && make -j) \
-    && mkdir -p /tmp/bin/ \
-    && ls /tmp/jq \
-    && cp /tmp/jq/jq /usr/local/bin/
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    sense-hat \
+    python3-pygame \
+    python3-blinkt
 
-ENTRYPOINT /data/ci-status.sh
-COPY . /data/
+RUN rm -rf /usr/local/lib/python2.7/
+
+# Define working directory
+WORKDIR /app
+
+COPY . /app
+
+RUN pip3 install -r requirements.txt
+
+CMD ["/usr/local/bin/python3", "/app/status_light.py"]
