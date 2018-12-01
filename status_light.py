@@ -12,19 +12,25 @@ sense.clear()
 config = yaml.load(open('config.yml'))
 api_token = str(config['BUILDKITE_API_KEY'])
 
-msleep = lambda x: time.sleep(x / 1000.0)
+
+def msleep(x):
+    time.sleep(x / 1000.0)
+
 
 def random_pixels():
     return [random_color() for _ in range(64)]
 
+
 def random_color():
     return [random.randint(0, 255) for _ in range(3)]
+
 
 def crazy_colors(pixels):
     pixels = pixels[7:-1]
     for _ in range(8):
         pixels.append(random_color())
     set_colors(pixels)
+
 
 def pad_colors(colors):
     length = len(colors)
@@ -36,45 +42,55 @@ def pad_colors(colors):
         padded = empty_pixels + colors
         return padded
 
+
 def set_colors(colors):
     sense.set_pixels(pad_colors(colors))
     return True
 
+
 def red():
     return (255, 0, 0)
+
 
 def green():
     return (0, 255, 0)
 
+
 def blue():
     return (0, 0, 255)
+
 
 def yellow():
     return (255, 255, 0)
 
+
 def white():
     return (255, 255, 255)
+
 
 def black():
     return (0, 0, 0)
 
+
 def brown():
     return (165, 42, 42)
 
-def blue():
-    return (0, 0, 128)
 
 def purple():
     return (128, 0, 128)
 
+
 def pink():
     return (255, 192, 203)
+
 
 def orange():
     return (255, 125, 61)
 
+
 def grey():
     return (50, 50, 50)
+
 
 def state_to_color(color):
     return {
@@ -91,13 +107,16 @@ def state_to_color(color):
         'finished': grey(),
     }[color]
 
+
 def translate_build_state_colors(build_states):
     return [state_to_color(color) for color in build_states]
+
 
 def reset_colors():
     colors = [[0 for _ in range(3)] for _ in range(64)]
     set_colors(colors)
     return True
+
 
 def main(Loading):
     urls = config['urls'][:8]
@@ -107,7 +126,7 @@ def main(Loading):
     for url in urls:
         print('Queueing {}'.format(url))
         if Loading:
-            crazy_colors(random_pixels()) 
+            crazy_colors(random_pixels())
         states = worker.fetch_first_eight_build_states(url)
         print('States: {}'.format(states))
         colors = translate_build_state_colors(states) + colors
