@@ -61,6 +61,9 @@ def black():
 def brown():
     return (165, 42, 42)
 
+def blue():
+    return (0, 0, 128)
+
 def purple():
     return (128, 0, 128)
 
@@ -82,6 +85,7 @@ def state_to_color(color):
         'scheduled': pink(),
         'blocked': purple(),
         'canceling': orange(),
+        'error': blue(),
         'skipped': brown(),
         'not_run': black(),
         'finished': grey(),
