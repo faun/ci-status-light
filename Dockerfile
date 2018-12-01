@@ -1,19 +1,17 @@
-FROM resin/raspberry-pi3-python:3-slim
+FROM resin/raspberry-pi-python:3-slim
 MAINTAINER Faun <docker@faun.me>
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
-    sense-hat \
-    python3-pygame \
-    python3-blinkt
-
-RUN rm -rf /usr/local/lib/python2.7/
+RUN apt-get update -q && \
+      apt-get install -qy python3-blinkt python-rpi.gpio python3-rpi.gpio
 
 # Define working directory
 WORKDIR /app
 
 COPY . /app
 
-RUN pip3 install -r requirements.txt
+ENV PYTHONPATH "/usr/lib/python3/dist-packages:/app:$PYTHONPATH"
 
-CMD ["/usr/local/bin/python3", "/app/status_light.py"]
+RUN sudo pip install -r requirements.txt
+
+CMD ["sudo", "python", "/app/test.py"]

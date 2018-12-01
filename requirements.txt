@@ -1,5 +1,5 @@
-sense-hat>=2.2.0
-pygame>=1.9.2a0
 requests>=2.11.1
 mock
 pyyaml>=3.12
+blinkt
+rpi.gpio

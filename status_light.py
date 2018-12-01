@@ -3,11 +3,6 @@ import sys
 import time
 import random
 import yaml
-from sense_hat import SenseHat
-from download_worker import DownloadWorker
-
-sense = SenseHat()
-sense.clear()
 
 config = yaml.load(open('config.yml'))
 api_token = str(config['BUILDKITE_API_KEY'])
@@ -44,7 +39,7 @@ def pad_colors(colors):
 
 
 def set_colors(colors):
-    sense.set_pixels(pad_colors(colors))
+    blinkt.set_pixels(pad_colors(colors))
     return True
 
 
