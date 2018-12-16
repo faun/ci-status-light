@@ -122,8 +122,7 @@ def main(Loading):
         if Loading:
             crazy_colors(random_pixels())
         states = worker.fetch_first_eight_build_states(url)
-        print('States: {}'.format(states))
-        colors = translate_build_state_colors(states) + colors
+        colors = translate_build_state_colors(states[::-1]) + colors
         print('Done')
         msleep(200)
     set_colors(colors)
