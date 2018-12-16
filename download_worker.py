@@ -8,10 +8,12 @@ class DownloadWorker():
             raise Exception("Missing api token")
         self.api_token = api_token
 
+
     def make_request(self, url):
         token = "Bearer {token}".format(token=self.api_token)
         auth_header = {"Authorization": token}
         return requests.get(url=url, headers=auth_header,)
+
 
     def get_json(self, url):
         json.loads(self.make_request(url).content)
