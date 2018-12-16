@@ -3,11 +3,9 @@ import sys
 import time
 import random
 import yaml
-from sense_hat import SenseHat
 from download_worker import DownloadWorker
-
-sense = SenseHat()
-sense.clear()
+import colorsys
+from blinkt import set_brightness, set_pixel, show
 
 config = yaml.load(open('config.yml'))
 api_token = str(config['BUILDKITE_API_KEY'])
@@ -18,33 +16,28 @@ def msleep(x):
 
 
 def random_pixels():
-    return [random_color() for _ in range(64)]
+    return [random_color() for _ in range(8)]
 
 
 def random_color():
     return [random.randint(0, 255) for _ in range(3)]
 
 
-def crazy_colors(pixels):
-    pixels = pixels[7:-1]
-    for _ in range(8):
-        pixels.append(random_color())
-    set_colors(pixels)
+def crazy_colors(led):
+    led = led[7:-1]
+    for i in range(8):
+        led.append(random_color())
 
-
-def pad_colors(colors):
-    length = len(colors)
-    if (length is 64):
-        return colors
-    else:
-        npad = 64 - len(colors)
-        empty_pixels = [black() for _ in range(npad)]
-        padded = empty_pixels + colors
-        return padded
-
+    set_colors(led)
+    return True
 
 def set_colors(colors):
-    sense.set_pixels(pad_colors(colors))
+    print("Setting colors... {}".format(colors))
+    for i in range(len(colors)):
+        r, g, b = tuple(colors[i])
+        set_pixel(i, r, g, b, 0.1)
+
+    show()
     return True
 
 
@@ -113,12 +106,13 @@ def translate_build_state_colors(build_states):
 
 
 def reset_colors():
-    colors = [[0 for _ in range(3)] for _ in range(64)]
+    colors = [[0 for _ in range(3)] for _ in range(8)]
     set_colors(colors)
     return True
 
 
 def main(Loading):
+    reset_colors()
     urls = config['urls'][:8]
     worker = DownloadWorker(api_token)
 
