@@ -16,7 +16,9 @@ class DownloadWorker():
 
 
     def get_json(self, url):
-        json.loads(self.make_request(url).content)
+        content = self.make_request(url).content
+        return json.loads(content.decode('utf-8'))
+
 
     def fetch_first_eight_build_states(self, url):
         try:
