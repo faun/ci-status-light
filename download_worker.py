@@ -23,6 +23,9 @@ class DownloadWorker():
     def fetch_first_eight_build_states(self, url):
         try:
             response = self.get_json(url)
-            return [build['state'] for build in response][:8]
-        except:
+            responses = [build['state'] for build in response][:8]
+            print("Response: {}".format(responses))
+            return responses
+        except Exception as e:
+            print("Error fetching JSON... {}".format(e))
             return ['error' for _ in range(8)]
