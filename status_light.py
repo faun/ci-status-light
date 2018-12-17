@@ -40,23 +40,23 @@ def set_colors(colors):
 
 
 def red():
-    return (255, 0, 0)
+    return (42, 0, 0)
 
 
 def green():
-    return (0, 255, 0)
+    return (0, 42, 0)
 
 
 def blue():
-    return (0, 0, 255)
+    return (0, 0, 42)
 
 
 def yellow():
-    return (255, 255, 0)
+    return (255, 89, 0)
 
 
 def white():
-    return (255, 255, 255)
+    return (42, 42, 42)
 
 
 def black():
@@ -64,23 +64,23 @@ def black():
 
 
 def brown():
-    return (165, 42, 42)
+    return (102, 30, 0)
 
 
 def purple():
-    return (128, 0, 128)
+    return (128, 0, 255)
 
 
 def pink():
-    return (255, 192, 203)
+    return (192, 0, 128)
 
 
 def orange():
-    return (255, 125, 61)
+    return (255, 89, 61)
 
 
 def grey():
-    return (50, 50, 50)
+    return (18, 18, 18)
 
 
 def state_to_color(color):
@@ -92,7 +92,7 @@ def state_to_color(color):
         'scheduled': pink(),
         'blocked': purple(),
         'canceling': orange(),
-        'error': blue(),
+        'error': purple(),
         'skipped': brown(),
         'not_run': black(),
         'finished': grey(),
