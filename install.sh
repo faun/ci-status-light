@@ -18,6 +18,7 @@ then
   sudo systemctl enable ci-status-light
   sudo systemctl start ci-status-light
   sudo systemctl status ci-status-light -l
+  sudo journalctl -u ci-status-light.service -f
 else
   cp -R "$DIR/systemd_examples/" "$DIR/systemd/"
   echo "Please edit the files in $DIR/systemd/ and run this command again"
