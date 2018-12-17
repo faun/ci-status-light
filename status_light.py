@@ -110,23 +110,23 @@ def reset_colors():
 
 
 def main(Loading):
-    reset_colors()
-    urls = config['urls'][:8]
+    if Loading:
+        reset_colors()
+    urls = config['urls']
     worker = DownloadWorker(api_token)
 
     colors = []
     for url in urls:
         print('Queueing {}'.format(url))
         if Loading:
-            crazy_colors(random_pixels())
+            crazy_colors()
         states = worker.fetch_first_eight_build_states(url)
         colors = translate_build_state_colors(states[::-1]) + colors
         print('Done')
-        msleep(200)
     set_colors(colors)
-    msleep(30000)
+    msleep(10000)
+
     main(False)
-    print('DONE')
 
 if __name__ == "__main__":
     try:
