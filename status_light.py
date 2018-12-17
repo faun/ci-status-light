@@ -22,7 +22,7 @@ def random_pixels():
 
 
 def random_color():
-    return [random.randint(0, 255) for _ in range(3)]
+    return [random.randint(0, 128) for _ in range(3)]
 
 
 def crazy_colors():
