@@ -5,10 +5,12 @@ import random
 import yaml
 from download_worker import DownloadWorker
 import colorsys
-from blinkt import set_brightness, set_pixel, show
+import blinkt
 
 config = yaml.load(open('config.yml'))
 api_token = str(config['BUILDKITE_API_KEY'])
+
+blinkt.set_clear_on_exit()
 
 
 def msleep(x):
@@ -23,22 +25,18 @@ def random_color():
     return [random.randint(0, 255) for _ in range(3)]
 
 
-def crazy_colors(led):
-    led = led[7:-1]
-    for i in range(8):
-        led.append(random_color())
+def crazy_colors():
+    set_colors(random_pixels())
 
-    set_colors(led)
-    return True
 
 def set_colors(colors):
     print("Setting colors... {}".format(colors))
     for i in range(len(colors)):
         r, g, b = tuple(colors[i])
-        set_pixel(i, r, g, b, 0.1)
+        print("Setting {} to {}, {}, {}".format(i, r, b, g))
+        blinkt.set_pixel(i, r, g, b, 0.1)
 
-    show()
-    return True
+    blinkt.show()
 
 
 def red():
