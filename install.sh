@@ -8,10 +8,10 @@ then
     target=$(basename "$file")
     if [[ -L /etc/systemd/system/$target ]]
     then
-      sudo rm -i "/etc/systemd/system/$target"
+      sudo rm - "/etc/systemd/system/$target"
     fi
     echo "Linking $target to /etc/systemd/system/"
-    sudo cp -Ri "$file" /etc/systemd/system/
+    sudo cp -R "$file" /etc/systemd/system/
   done
   sudo systemctl daemon-reload
   sudo systemctl stop ci-status-light
