@@ -15,6 +15,7 @@ then
   done
   sudo systemctl daemon-reload
   sudo systemctl stop ci-status-light
+  sudo systemctl enable ci-status-light
   sudo systemctl start ci-status-light
   sudo systemctl status ci-status-light -l
 else
