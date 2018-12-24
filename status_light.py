@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import signal
 import time
 import random
 import yaml
@@ -128,16 +129,25 @@ def main(Loading):
 
     main(False)
 
+def signal_handler(signal, frame):
+    exit_gracefully()
+
+def exit_gracefully(self):
+    reset_colors()
+    sys.exit(0)
+
 if __name__ == "__main__":
     try:
+        signal.signal(signal.SIGTERM, signal_handler)
         main(True)
 
     except KeyboardInterrupt:
-        reset_colors()
-        sys.exit(0)
+        exit_gracefully()
 
-    except OSError:
-        e = sys.exc_info()[0]
+    except Exception as e:
         print("Quitting... {}".format(e))
         reset_colors()
         sys.exit(1)
+
+    finally:
+        exit_gracefully()
