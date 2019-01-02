@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 import sys
+import signal
 import time
 import random
 import yaml
-from sense_hat import SenseHat
 from download_worker import DownloadWorker
-
-sense = SenseHat()
-sense.clear()
+import colorsys
+import blinkt
 
 config = yaml.load(open('config.yml'))
 api_token = str(config['BUILDKITE_API_KEY'])
+
+blinkt.set_clear_on_exit()
 
 
 def msleep(x):
@@ -18,54 +19,45 @@ def msleep(x):
 
 
 def random_pixels():
-    return [random_color() for _ in range(64)]
+    return [random_color() for _ in range(8)]
 
 
 def random_color():
-    return [random.randint(0, 255) for _ in range(3)]
+    return [random.randint(0, 128) for _ in range(3)]
 
 
-def crazy_colors(pixels):
-    pixels = pixels[7:-1]
-    for _ in range(8):
-        pixels.append(random_color())
-    set_colors(pixels)
-
-
-def pad_colors(colors):
-    length = len(colors)
-    if (length is 64):
-        return colors
-    else:
-        npad = 64 - len(colors)
-        empty_pixels = [black() for _ in range(npad)]
-        padded = empty_pixels + colors
-        return padded
+def crazy_colors():
+    set_colors(random_pixels())
 
 
 def set_colors(colors):
-    sense.set_pixels(pad_colors(colors))
-    return True
+    print("Setting colors... {}".format(colors))
+    for i in range(len(colors)):
+        r, g, b = tuple(colors[i])
+        print("Setting {} to {}, {}, {}".format(i, r, b, g))
+        blinkt.set_pixel(i, r, g, b, 0.1)
+
+    blinkt.show()
 
 
 def red():
-    return (255, 0, 0)
+    return (42, 0, 0)
 
 
 def green():
-    return (0, 255, 0)
+    return (0, 42, 0)
 
 
 def blue():
-    return (0, 0, 255)
+    return (0, 0, 42)
 
 
 def yellow():
-    return (255, 255, 0)
+    return (255, 89, 0)
 
 
 def white():
-    return (255, 255, 255)
+    return (42, 42, 42)
 
 
 def black():
@@ -73,23 +65,23 @@ def black():
 
 
 def brown():
-    return (165, 42, 42)
+    return (102, 30, 0)
 
 
 def purple():
-    return (128, 0, 128)
+    return (128, 0, 255)
 
 
 def pink():
-    return (255, 192, 203)
+    return (192, 0, 128)
 
 
 def orange():
-    return (255, 125, 61)
+    return (255, 89, 61)
 
 
 def grey():
-    return (50, 50, 50)
+    return (18, 18, 18)
 
 
 def state_to_color(color):
@@ -101,7 +93,7 @@ def state_to_color(color):
         'scheduled': pink(),
         'blocked': purple(),
         'canceling': orange(),
-        'error': blue(),
+        'error': purple(),
         'skipped': brown(),
         'not_run': black(),
         'finished': grey(),
@@ -113,40 +105,49 @@ def translate_build_state_colors(build_states):
 
 
 def reset_colors():
-    colors = [[0 for _ in range(3)] for _ in range(64)]
+    colors = [[0 for _ in range(3)] for _ in range(8)]
     set_colors(colors)
     return True
 
 
 def main(Loading):
-    urls = config['urls'][:8]
+    if Loading:
+        reset_colors()
+    urls = config['urls']
     worker = DownloadWorker(api_token)
 
     colors = []
     for url in urls:
         print('Queueing {}'.format(url))
         if Loading:
-            crazy_colors(random_pixels())
+            crazy_colors()
         states = worker.fetch_first_eight_build_states(url)
-        print('States: {}'.format(states))
-        colors = translate_build_state_colors(states) + colors
+        colors = translate_build_state_colors(states[::-1]) + colors
         print('Done')
-        msleep(200)
     set_colors(colors)
-    msleep(30000)
+    msleep(10000)
+
     main(False)
-    print('DONE')
+
+def signal_handler(signal, frame):
+    exit_gracefully()
+
+def exit_gracefully(self):
+    reset_colors()
+    sys.exit(0)
 
 if __name__ == "__main__":
     try:
+        signal.signal(signal.SIGTERM, signal_handler)
         main(True)
 
     except KeyboardInterrupt:
-        reset_colors()
-        sys.exit(0)
+        exit_gracefully()
 
-    except OSError:
-        e = sys.exc_info()[0]
+    except Exception as e:
         print("Quitting... {}".format(e))
         reset_colors()
         sys.exit(1)
+
+    finally:
+        exit_gracefully()
